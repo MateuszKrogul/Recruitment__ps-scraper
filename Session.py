@@ -60,3 +60,5 @@ class Session:
             id = id.group(1)
             self.terms_ids[term.text.strip()] = str(id)
         return self.terms_ids
+    def get_courses(self, term):
+        pass

@@ -8,24 +8,21 @@ def main():
     print("Type \"end\" to close.")
 
     session = Session.Session()
+    session.login(username,password)
+
+    counter = 1
+    for term in session.get_terms():
+        print("{} - {}".format(counter, term))
+    print("Choose term: ")
 
     user_input = input()
     while user_input != "end":
-        try:
-            try:
-                user_choice = data.courses[user_input][1]
-            except:
-                print("Incorrect input")
-                user_input = input()
-                continue
-            if not session.is_logged:
-                session.login(username,password)
-            grade = session.get_grade(user_input)
-            print(grade)
-            user_input = input()
-        except KeyboardInterrupt:
-            session.session.close()
-    session.session.close()
+        if user_input not in range(1,5):
+            print("Incorrent input")
+            continue
+        session.get_courses(user_input)
+        
+        user_input = input()
 
 if __name__ == "__main__":
     main()
