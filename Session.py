@@ -38,6 +38,7 @@ class Session:
         except:
             grade = "no grade"
         return  grade
+
     def get_terms(self):
         #TODO save to file to read later
         response = self.session.get("https://ps.ug.edu.pl/wyniki.web")
@@ -55,10 +56,13 @@ class Session:
         soup = BeautifulSoup(response.text, "html.parser")
         terms = soup.select("div[id*=semNr]")
 
+        counter = 1
         for term in terms:
             id = re.search(r"semNr(.*)", term["id"])
             id = id.group(1)
-            self.terms_ids[term.text.strip()] = str(id)
+            self.terms_ids[counter] = [term.text.strip(), str(id)] #key is term name e.g. sem1.
+            counter += 1
         return self.terms_ids
+
     def get_courses(self, term):
         pass

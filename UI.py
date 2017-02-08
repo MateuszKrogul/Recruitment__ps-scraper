@@ -10,10 +10,12 @@ def main():
     session = Session.Session()
     session.login(username,password)
 
-    counter = 1
-    for term in session.get_terms():
-        print("{} - {}".format(counter, term))
+    terms = session.get_terms()
+    for term in terms :
+        print("{} - {}".format(term, terms[term][0]))
     print("Choose term: ")
+    session.session.close()
+    raise SystemExit
 
     user_input = input()
     while user_input != "end":
@@ -21,7 +23,7 @@ def main():
             print("Incorrent input")
             continue
         session.get_courses(user_input)
-        
+
         user_input = input()
 
 if __name__ == "__main__":
