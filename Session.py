@@ -5,9 +5,9 @@ class Session:
     def __init__(self):
         self.session = requests.session()
         self.is_logged = False
-        self.terms_ids= {}
-        self.courses_ids= {}
-        # courses_ids structure: courses_ids[term]=[[course_name1, course_id1],[course_name2, course_id2],...]
+        self.terms_ids = {} #terms_ids[number] = [name, id]
+        self.courses_ids = {}
+        # courses_ids structure: courses_ids[term] = [[course_name1, course_id1, course_gui_id1],...]
 
     def login(self,username,password):
         payload = {
@@ -23,14 +23,14 @@ class Session:
         #TODO implement
         pass
 
-    def get_grade(self,course):
-        response = self.session.get("https://ps.ug.edu.pl/getPrzedmioty.web?ajax=true&osobaId=0&semId=10574328&pozaTokiem=&wybierzSemKal=20161")
-        response = self.session.get("https://ps.ug.edu.pl/getWyniki.web?ajax=true&przedmiotId="+str(data.courses[course][1])+"&identyfikatorGUI=" + data.courses[course][2])
-        response = self.session.get("https://ps.ug.edu.pl/getWyniki.web?chosenTab=3&tabClass=ZakladkiPrzedmiotu"+str(data.courses[course][1])+"&")
-        response = self.session.get("https://ps.ug.edu.pl/getWyniki.web?ajax=true&przedmiotId=" + str(data.courses[course][1]) + "&identyfikatorGUI=" + data.courses[course][2])
+    def get_grade(self, term, course):
+        response = self.session.get("https://ps.ug.edu.pl/getPrzedmioty.web?ajax=true&osobaId=0&semId=" + self.terms_ids[term][1])
+        response = self.session.get("https://ps.ug.edu.pl/getWyniki.web?ajax=true&przedmiotId=" + self.courses_ids[term][course][1] + "&identyfikatorGUI=" + self.courses_ids[term][course][2])
+        response = self.session.get("https://ps.ug.edu.pl/getWyniki.web?chosenTab=3&tabClass=ZakladkiPrzedmiotu" + self.courses_ids[term][course][1] + "&")
+        response = self.session.get("https://ps.ug.edu.pl/getWyniki.web?ajax=true&przedmiotId=" + self.courses_ids[term][course][1] + "&identyfikatorGUI=" + self.courses_ids[term][course][2])
         soup = BeautifulSoup(response.text,"html.parser")
         try:
-            div = soup.select("div[id=tabContentZakladkiPrzedmiotu"+str(data.courses[course][1])+"_3]")
+            div = soup.select("div[id=tabContentZakladkiPrzedmiotu" + self.courses_ids[term][course][1] + "_3]")
             tr = div[0].table.select("tr")
             try:
                 grade = str(float(tr[1].td.text.strip()))

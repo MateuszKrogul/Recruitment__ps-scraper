@@ -17,22 +17,41 @@ def main():
 
     user_input = input()
     while user_input != "end":
+        if user_input == "end": break
         try:
-            user_input = int(user_input)
+            term = int(user_input)
         except:
             print("Incorrent input")
             user_input = input()
             continue
-        if user_input not in range(1,6):
+        if term not in range(1,6):
             print("Incorrent input")
             user_input = input()
             continue
-        courses = session.get_courses(user_input)
+        courses = session.get_courses(term)
 
 
-        for i in range(len(courses[user_input])):
-            print("{} - {}".format(i, courses[user_input][i][0]))
+        for i in range(len(courses[term])):
+            print("{} - {}".format(i, courses[term][i][0]))
         print("Choose course:")
+
+        user_input = input()
+        while user_input != -1:
+            if user_input == "end": break
+            try:
+                course = int(user_input)
+            except:
+                print("Incorrent input")
+                user_input = input()
+                continue
+            if course not in range(0,len(courses[term])+1):
+                print("Incorrent input")
+                user_input = input()
+                continue
+            #TODO get grades there
+            #session.get_grade(term,course)
+            user_input = -1
+
         session.session.close()
         raise SystemExit
         user_input = input()
