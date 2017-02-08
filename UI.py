@@ -1,4 +1,4 @@
-import Session, data
+import Session
 def main():
     print("Username: ")
     username = input()
@@ -48,13 +48,13 @@ def main():
                 print("Incorrent input")
                 user_input = input()
                 continue
-            #TODO get grades there
-            #session.get_grade(term,course)
+
+            grade = session.get_grade(term,course)
+            print("{} -> grade: {}".format(courses[term][course][0], grade))
             user_input = -1
 
-        session.session.close()
-        raise SystemExit
         user_input = input()
 
 if __name__ == "__main__":
     main()
+    #TODO serve bad login or password

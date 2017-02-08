@@ -1,4 +1,4 @@
-import requests, re, data
+import requests, re
 from bs4 import  BeautifulSoup
 
 class Session:
@@ -39,7 +39,7 @@ class Session:
 
         except:
             grade = "no grade"
-        return  grade
+        return grade
 
     def get_terms(self):
         #TODO save to file to read later
