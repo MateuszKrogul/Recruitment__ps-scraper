@@ -1,4 +1,4 @@
-import requests, data, re
+import requests, re, data
 from bs4 import  BeautifulSoup
 
 class Session:

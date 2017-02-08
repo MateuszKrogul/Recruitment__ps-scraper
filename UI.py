@@ -1,12 +1,11 @@
-import data, Session
+import Session, data
 def main():
     print("Username: ")
     username = input()
     print("Password: ")
     password = input()
-    for i in data.courses:
-        print("{}: {}".format(i, data.courses[i][0]))
-    print("Type \"end\" to close.\nChoose number: ")
+
+    print("Type \"end\" to close.")
 
     session = Session.Session()
 
