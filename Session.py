@@ -5,7 +5,9 @@ class Session:
     def __init__(self):
         self.session = requests.session()
         self.is_logged = False
-        self.terms_ids={}
+        self.terms_ids= {}
+        self.courses_ids= {}
+        # courses_ids structure: courses_ids[term]=[[course_name1, course_id1],[course_name2, course_id2],...]
 
     def login(self,username,password):
         payload = {
@@ -65,4 +67,21 @@ class Session:
         return self.terms_ids
 
     def get_courses(self, term):
-        pass
+        response = self.session.get("https://ps.ug.edu.pl/getPrzedmioty.web?ajax=true&osobaId=0&semId=" + str(self.terms_ids[term][1]))
+        with open("r.text","w") as f:
+            f.write(response.text)
+
+        soup = BeautifulSoup(response.text, "html.parser")
+        container = soup.select("div[id*=divZajec]")
+
+        self.courses_ids[term] = []
+        for course in soup.select("div[id*=divZajec]"):
+            id = re.search(r"przedmiotId=(.*)&", str(course.div.select("script")[1]))
+            id = id.group(1)
+
+            id_gui = re.search(r"divZajec(.*)", course["id"])
+            id_gui = id_gui.group(1)
+
+            self.courses_ids[term].extend([[course.div.a.text, str(id), str(id_gui)]])
+            #course.div.a.text -> course name
+        return self.courses_ids
