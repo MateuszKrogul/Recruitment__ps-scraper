@@ -17,6 +17,8 @@ class Session:
         }
         response = self.session.post("https://ps.ug.edu.pl/login.web", data=payload)
         self.is_logged = True
+
+        #TODO check logged or not
         return self.session
 
     def logout(self):

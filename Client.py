@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget, QLabel, QLine
 from PyQt5.QtGui import QImage, QPalette, QBrush, QFont, QFontMetrics, QRegion
 from PyQt5.QtCore import QSize, Qt, QPropertyAnimation, QRect
 import sys, time
+import Session
 
 class Window(QWidget):
 
@@ -9,6 +10,7 @@ class Window(QWidget):
         super(Window, self).__init__()
 
         self.initLoginScreen()
+        self.session = None
 
     def initLoginScreen(self):
 
@@ -77,6 +79,11 @@ class Window(QWidget):
         self.close()
 
     def submit_on_clicked(self):
+
+        if self.session == None:
+            self.session = Session.Session()
+        self.session.login(self.le_username.text(), self.le_password.text())
+
         if False: #if wrong pass or username
             self.message.show()
             self.le_username.textChanged.connect(lambda: (self.message.hide(),
@@ -87,7 +94,7 @@ class Window(QWidget):
 
         self.set_background("./Graphics/background.png")
         for i in self.children():
-            i.deleteLater()
+            i.deleteLater
         '''
         x = 500
         y = 600
@@ -99,21 +106,21 @@ class Window(QWidget):
 
         #TODO implement getting terms
 
-        terms = ["test1", "test2", "test3", "test4", "test5", "test6"] # get_terms
+        terms = self.session.get_terms()
 
         x = 5
         y = 0
 
         for term in terms:
-            self.temp = QPushButton(self)
-            self.temp.setFont(QFont("Arial", 16))
-            self.temp.setStyleSheet("background-color: solid")
-            self.temp.setText(term)
-            self.temp.move(x, y)
-            self.temp.show()
+            temp = QPushButton(self)
+            temp.setFont(QFont("Arial", 16))
+            temp.setStyleSheet("background-color: solid")
+            temp.setText(terms[term][0])
+            temp.move(x, y)
+            temp.show()
             y += 30
 
-        x= self.temp.width()+10
+        x= temp.width()+10
         self.setMaximumSize(x, y )
         self.resize(x,y)
         self.setFixedSize(x,y)
