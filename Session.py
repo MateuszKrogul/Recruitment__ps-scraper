@@ -16,10 +16,12 @@ class Session:
             'pass': password
         }
         response = self.session.post("https://ps.ug.edu.pl/login.web", data=payload)
-        self.is_logged = True
-
-        #TODO check logged or not
-        return self.session
+        if "Zaloguj" in response.text:
+            self.is_logged = False
+            return False
+        else:
+            self.is_logged = True
+            return True
 
     def logout(self):
         #TODO implement
