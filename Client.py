@@ -79,22 +79,24 @@ class Window(QWidget):
         self.close()
 
     def submit_on_clicked(self):
-
+        not_for_docs = None
+        '''
         if self.session == None:
             self.session = Session.Session()
         self.session.login(self.le_username.text(), self.le_password.text())
 
-        if False: #if wrong pass or username
+        if not self.session.login(self.le_username.text(), self.le_password.text()): #if wrong pass or username
             self.message.show()
             self.le_username.textChanged.connect(lambda: (self.message.hide(),
                                                           self.le_username.disconnect()))
             self.le_password.textChanged.connect(lambda: (self.message.hide(),
                                                           self.le_password.disconnect()))
             return
+        '''
 
         self.set_background("./Graphics/background.png")
         for i in self.children():
-            i.deleteLater
+            i.deleteLater()
         '''
         x = 500
         y = 600
@@ -104,27 +106,42 @@ class Window(QWidget):
         self.move(self.x(), self.y()-200)
         '''
 
-        #TODO implement getting terms
+        #terms = self.session.get_terms()
+        terms = ["sem1","sem2","sem3","sem4","sem5","sem6"]
 
-        terms = self.session.get_terms()
+        temp_button = QPushButton(self)
+        temp_button.setFont(QFont("Arial", 16))
+        temp_button.setStyleSheet("background-color: solid")
 
         x = 5
-        y = 0
+        n = len(terms)
+        gap = 0
+        y = (self.height() / 2) - ((n * temp_button.height() + (n - 1) * gap)/2)
+        print("{}\n{}\n{}\n{}\n".format(len(terms),self.height(),temp_button.height(), gap))
+        print(y)
+        del(temp_button)
+
+        self.le_term = []
 
         for term in terms:
-            temp = QPushButton(self)
-            temp.setFont(QFont("Arial", 16))
-            temp.setStyleSheet("background-color: solid")
-            temp.setText(terms[term][0])
-            temp.move(x, y)
-            temp.show()
-            y += 30
+            term_button = QPushButton(self)
+            term_button.setFont(QFont("Arial", 16))
+            term_button.setStyleSheet("background-color: solid")
 
-        x= temp.width()+10
+            #term_button.setText(terms[term][0])
+            term_button.setText(term)
+
+            term_button.move(x, y)
+            term_button.show()
+            y += term_button.height() + gap
+            self.le_term.extend([term_button])
+
+        '''
+        x= self.children()[0].width()+10
         self.setMaximumSize(x, y )
         self.resize(x,y)
         self.setFixedSize(x,y)
-
+        '''
 
     def set_background(self, path):
         # background image
