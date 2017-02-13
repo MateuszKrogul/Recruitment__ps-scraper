@@ -11,6 +11,8 @@ class Window(QWidget):
 
         self.initLoginScreen()
         self.session = None
+        self.courses = []
+        self.l_no_courses = None
 
     def initLoginScreen(self):
 
@@ -130,9 +132,11 @@ class Window(QWidget):
 
             #term_button.setText(terms[term][0])
             term_button.setText(term)
-
+            a = 2
             term_button.move(x, y)
             term_button.show()
+            term_button.clicked.connect(lambda:
+                                        self.term_button_on_clicked(term_button))
             y += term_button.height() + gap
             self.le_term.extend([term_button])
 
@@ -142,6 +146,30 @@ class Window(QWidget):
         self.resize(x,y)
         self.setFixedSize(x,y)
         '''
+    def term_button_on_clicked(self, button):
+        #get courses
+        self.courses = ["course1","course2","course3","course4"]
+        if len(self.courses) == 0 and self.l_no_courses is not None:
+            self.l_no_courses.show()
+
+        if len(self.courses) == 0 and self.l_no_courses is None:
+            self.l_no_courses = QLabel("Brak kursów", self)
+            self.l_no_courses.setFont(QFont("Arial",18))
+            palette = QPalette()
+            palette.setColor(QPalette.Foreground, Qt.white)
+            self.l_no_courses.setPalette(palette)
+            self.l_no_courses.move(button.x()+button.width()+30,50)
+            self.l_no_courses.show()
+
+
+        if len(self.courses) > 0 and self.l_no_courses is not None:
+            self.l_no_courses.hide()
+        for course in self.courses:
+            #TODO create label for course and grade, get grade
+            pass
+
+
+
 
     def set_background(self, path):
         # background image
