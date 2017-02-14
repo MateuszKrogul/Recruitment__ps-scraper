@@ -119,11 +119,9 @@ class Window(QWidget):
         n = len(terms)
         gap = 0
         y = (self.height() / 2) - ((n * temp_button.height() + (n - 1) * gap)/2)
-        print("{}\n{}\n{}\n{}\n".format(len(terms),self.height(),temp_button.height(), gap))
-        print(y)
         del(temp_button)
 
-        self.le_term = []
+        self.b_term = []
 
         for term in terms:
             term_button = QPushButton(self)
@@ -138,7 +136,7 @@ class Window(QWidget):
             term_button.clicked.connect(lambda:
                                         self.term_button_on_clicked(term_button))
             y += term_button.height() + gap
-            self.le_term.extend([term_button])
+            self.b_term.extend([term_button])
 
         '''
         x= self.children()[0].width()+10
@@ -148,7 +146,10 @@ class Window(QWidget):
         '''
     def term_button_on_clicked(self, button):
         #get courses
-        self.courses = ["course1","course2","course3","course4"]
+        #self.courses = ["course1","course2","course3","course4", "course5", "course6"]
+        temp_x = 10
+        for i in range(temp_x):
+            self.courses.extend(["course" + str(i+1)])
         if len(self.courses) == 0 and self.l_no_courses is not None:
             self.l_no_courses.show()
 
@@ -164,9 +165,30 @@ class Window(QWidget):
 
         if len(self.courses) > 0 and self.l_no_courses is not None:
             self.l_no_courses.hide()
+
+        temp_label = QLabel(self)
+        temp_label.setFont(QFont("Arial", 18))
+
+        y1 = 50
+        y2 = 250
+        n = len(self.courses)
+        gap = ((y2-y1) - n * temp_label.height())/ (n-1)
+        print("n = {}\nheigh = {}\ngap = {}\n".format(n, temp_label.height(), gap))
+        label_heigh = temp_label.height()
+        del(temp_label)
+        y = y1
+
         for course in self.courses:
             #TODO create label for course and grade, get grade
-            pass
+            l_course = QLabel(course, self)
+            l_course.setFont(QFont("Arial", 18))
+            palette = QPalette()
+            palette.setColor(QPalette.Foreground, Qt.white)
+            l_course.setPalette(palette)
+            l_course.move(button.x() + button.width(), y) # TODO change y position
+
+            l_course.show()
+            y +=  label_heigh + gap
 
 
 
