@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget, QLabel, QLineEdit, QPushButton
 from PyQt5.QtGui import QImage, QPalette, QBrush, QFont, QFontMetrics, QRegion
 from PyQt5.QtCore import QSize, Qt, QPropertyAnimation, QRect
-import sys, time
+import sys, time, random
 import Session
 
 class Window(QWidget):
@@ -147,7 +147,7 @@ class Window(QWidget):
     def term_button_on_clicked(self, button):
         #get courses
         #self.courses = ["course1","course2","course3","course4", "course5", "course6"]
-        temp_x = 10
+        temp_x = 15
         for i in range(temp_x):
             self.courses.extend(["course" + str(i+1)])
         if len(self.courses) == 0 and self.l_no_courses is not None:
@@ -169,8 +169,8 @@ class Window(QWidget):
         temp_label = QLabel(self)
         temp_label.setFont(QFont("Arial", 18))
 
-        y1 = 50
-        y2 = 250
+        y1 = 40
+        y2 = 290
         n = len(self.courses)
         gap = ((y2-y1) - n * temp_label.height())/ (n-1)
         print("n = {}\nheigh = {}\ngap = {}\n".format(n, temp_label.height(), gap))
@@ -180,12 +180,23 @@ class Window(QWidget):
 
         for course in self.courses:
             #TODO create label for course and grade, get grade
+            # courses labels
             l_course = QLabel(course, self)
             l_course.setFont(QFont("Arial", 18))
             palette = QPalette()
             palette.setColor(QPalette.Foreground, Qt.white)
             l_course.setPalette(palette)
             l_course.move(button.x() + button.width(), y) # TODO change y position
+
+            # get grade
+            grade = random.randint(3,5)
+
+            # grades labels
+            l_grade = QLabel(str(grade), self)
+            l_grade.setFont(QFont("Arial", 18))
+            l_grade.setPalette(palette)
+            l_grade.move(l_course.x() + l_course.width() + 10, y)
+            l_grade.show()
 
             l_course.show()
             y +=  label_heigh + gap
